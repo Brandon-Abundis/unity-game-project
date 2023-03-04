@@ -25,12 +25,17 @@ public class PlayerLocomotion : MonoBehaviour
     [Header("Movement Flags")]
     public bool isSprinting;
     public bool isGrounded;
+    public bool isJumping;
 
     [Header("Movenment Speeds")]
     public float walkingSpeed = 1.5f;
     public float runningSpeed = 5;
     public float sprintingSpeed = 7;
     public float rotationSpeed = 15;
+
+    [Header("Jump Speeds")]
+    public float jumpHeight = 3;
+    public float gravityIntensity = -15;
 
     private void Awake() {
         playerManager = GetComponent<PlayerManager>();
@@ -56,6 +61,10 @@ public class PlayerLocomotion : MonoBehaviour
         //HandleRotation();//
     }
     private void HandleMovement() {
+        if (isJumping) {
+            return;
+        }
+
         // Up, Right = 1, Down, Left = -1.
         moveDirection = new Vector3(cameraObject.forward.x, 0f, cameraObject.forward.z) * inputManager.verticalInput;// the amount is = Movement input.
         // moveDirection = cameraObject.forward * inputManager.horizontalInput;
@@ -77,12 +86,21 @@ public class PlayerLocomotion : MonoBehaviour
         }
         // moveDirection = moveDirection * runningSpeed;
 
-        Vector3 movementVelocity = moveDirection;
-        // move player based on previous calculations.
-        playerRigidBody.velocity = movementVelocity;
+        // Vector3 movementVelocity = moveDirection;
+        // // move player based on previous calculations.
+        // playerRigidBody.velocity = movementVelocity;
+        if (isGrounded && !isJumping)
+        {
+            Vector3 movementVelocity = moveDirection;
+            playerRigidBody.velocity = movementVelocity; //this is the root of my jumping problem
+        }
         
     }
     private void HandleRotation() {
+        if (isJumping) {
+            return;
+        }
+
         Vector3 targetDirection = Vector3.zero;
 
         targetDirection = cameraObject.forward * inputManager.verticalInput;
@@ -112,7 +130,7 @@ public class PlayerLocomotion : MonoBehaviour
         Vector3 rayCastOrigin = transform.position;
         rayCastOrigin.y = rayCastOrigin.y + rayCastOriginHeight;
 
-        if (!isGrounded) {
+        if (!isGrounded && !isJumping) {
             if (!playerManager.isInteracting) {
                 animatorManager.PlayTargetAnimation("Falling", true);
             }
@@ -131,6 +149,18 @@ public class PlayerLocomotion : MonoBehaviour
             isGrounded = true;
         } else {
             isGrounded = false;
+        }
+    }
+
+    public void HandleJumping() {
+        if (isGrounded) {
+            animatorManager.animator.SetBool("isJumping", true);
+            animatorManager.PlayTargetAnimation("Jump", false);
+
+            float jumpingVelocity = Mathf.Sqrt(-2 * gravityIntensity * jumpHeight);
+            Vector3 playerVelocity = moveDirection;
+            playerVelocity.y = jumpingVelocity;
+            playerRigidBody.velocity = playerVelocity;
         }
     }
 }

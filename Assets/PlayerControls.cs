@@ -237,6 +237,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Jump"",
+                    ""type"": ""Button"",
+                    ""id"": ""6319335c-9e3f-4a96-a737-bcd5964b006e"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -261,6 +270,28 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""action"": ""B"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0c128832-5973-4e06-a1bc-4ca248056901"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Jump"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""418f3c18-3e66-41f0-9eda-1a510a20f9d6"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Jump"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -274,6 +305,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         // Player Actions
         m_PlayerActions = asset.FindActionMap("Player Actions", throwIfNotFound: true);
         m_PlayerActions_B = m_PlayerActions.FindAction("B", throwIfNotFound: true);
+        m_PlayerActions_Jump = m_PlayerActions.FindAction("Jump", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -390,11 +422,13 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_PlayerActions;
     private List<IPlayerActionsActions> m_PlayerActionsActionsCallbackInterfaces = new List<IPlayerActionsActions>();
     private readonly InputAction m_PlayerActions_B;
+    private readonly InputAction m_PlayerActions_Jump;
     public struct PlayerActionsActions
     {
         private @PlayerControls m_Wrapper;
         public PlayerActionsActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
         public InputAction @B => m_Wrapper.m_PlayerActions_B;
+        public InputAction @Jump => m_Wrapper.m_PlayerActions_Jump;
         public InputActionMap Get() { return m_Wrapper.m_PlayerActions; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -407,6 +441,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @B.started += instance.OnB;
             @B.performed += instance.OnB;
             @B.canceled += instance.OnB;
+            @Jump.started += instance.OnJump;
+            @Jump.performed += instance.OnJump;
+            @Jump.canceled += instance.OnJump;
         }
 
         private void UnregisterCallbacks(IPlayerActionsActions instance)
@@ -414,6 +451,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @B.started -= instance.OnB;
             @B.performed -= instance.OnB;
             @B.canceled -= instance.OnB;
+            @Jump.started -= instance.OnJump;
+            @Jump.performed -= instance.OnJump;
+            @Jump.canceled -= instance.OnJump;
         }
 
         public void RemoveCallbacks(IPlayerActionsActions instance)
@@ -439,5 +479,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     public interface IPlayerActionsActions
     {
         void OnB(InputAction.CallbackContext context);
+        void OnJump(InputAction.CallbackContext context);
     }
 }
