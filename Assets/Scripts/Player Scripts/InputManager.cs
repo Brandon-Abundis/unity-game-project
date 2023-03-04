@@ -7,6 +7,11 @@ public class InputManager : MonoBehaviour {
     AnimatorManager animatorManager;
 
     public Vector2 movementInput; // a directon to Left/Right and Up/Down.
+    public Vector2 cameraInput;
+
+    public float cameraInputX;
+    public float cameraInputY;
+
     private float moveAmount;
     public float verticalInput;
     public float horizontalInput;
@@ -23,6 +28,7 @@ public class InputManager : MonoBehaviour {
             // every input on keyboard/joystick is going to be recorded to the 
             //  vector 2 movementInput variable.
             playerControls.PlayerMovement.Movement.performed += i => movementInput = i.ReadValue<Vector2>();
+            playerControls.PlayerMovement.Camera.performed += i => cameraInput = i.ReadValue<Vector2>();
         }
 
         playerControls.Enable();
@@ -43,6 +49,9 @@ public class InputManager : MonoBehaviour {
     private void HandleMovementInput() {
         verticalInput = movementInput.y; // giving it the value of y axis
         horizontalInput = movementInput.x;
+
+        cameraInputY = cameraInput.y;
+        cameraInputX = cameraInput.x;
 
         //math.clamp01 clamps value to 0 or 1
         moveAmount = Mathf.Clamp01(Mathf.Abs(horizontalInput) + Mathf.Abs(verticalInput));

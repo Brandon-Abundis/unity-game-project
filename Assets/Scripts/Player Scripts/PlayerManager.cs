@@ -5,12 +5,13 @@ using UnityEngine;
 public class PlayerManager : MonoBehaviour
 {
     InputManager inputManager; // calling the input manager scripts
-
+    CameraManager cameraManager;
     PlayerLocomotion playerLocomotion;
 
     private void Awake() {
         // scripts will be resting on the same game object
         inputManager = GetComponent<InputManager>();
+        cameraManager = FindObjectOfType<CameraManager>();
         playerLocomotion = GetComponent<PlayerLocomotion>();
     }
 
@@ -23,5 +24,10 @@ public class PlayerManager : MonoBehaviour
     //  handled under fixed update
     private void FixedUpdate() {
         playerLocomotion.HandleAllMovement();
+    }
+
+    //calls after the frame has ended
+    private void LateUpdate() {
+        cameraManager.HandleAllCameraMovement();
     }
 }
