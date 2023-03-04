@@ -199,6 +199,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db28f4a7440295b48bb6d09d082031df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &953028610
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 953028602}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b240f30b5cf7df499b00aec43e74729, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1019452418
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -254,6 +266,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: LowPolyMan
       objectReference: {fileID: 0}
+    - target: {fileID: 5866666021909216657, guid: 010dd7740528b1147a89960adba7fc7f, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 7f4c54c4d9c2081419599f66e443ffe6, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 010dd7740528b1147a89960adba7fc7f, type: 3}
 --- !u!1 &1079135705

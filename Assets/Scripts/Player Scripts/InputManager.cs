@@ -4,10 +4,16 @@ using UnityEngine;
 
 public class InputManager : MonoBehaviour {
     PlayerControls playerControls;
+    AnimatorManager animatorManager;
 
     public Vector2 movementInput; // a directon to Left/Right and Up/Down.
+    private float moveAmount;
     public float verticalInput;
     public float horizontalInput;
+
+    private void Awake() {
+        animatorManager = GetComponent<AnimatorManager>();
+    }
 
     private void OnEnable() {
         // meaning the variable is not filled with anything.
@@ -37,5 +43,9 @@ public class InputManager : MonoBehaviour {
     private void HandleMovementInput() {
         verticalInput = movementInput.y; // giving it the value of y axis
         horizontalInput = movementInput.x;
+
+        //math.clamp01 clamps value to 0 or 1
+        moveAmount = Mathf.Clamp01(Mathf.Abs(horizontalInput) + Mathf.Abs(verticalInput));
+        animatorManager.UpdateAnimatorValue(0, moveAmount);
     }
 }
