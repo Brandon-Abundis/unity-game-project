@@ -15,7 +15,7 @@ public class AnimatorManager : MonoBehaviour
         horizontal = Animator.StringToHash("Horizontal");
         vertical = Animator.StringToHash("Vertical");
     }
-    public void UpdateAnimatorValue(float horizontalMovement, float verticalMovement) {
+    public void UpdateAnimatorValue(float horizontalMovement, float verticalMovement, bool isSprinting) {
         // Animation Snapping
         // snaps to a walk or a run, rounds the values, makes it cleaner
         float snappedHorizontal;
@@ -51,6 +51,10 @@ public class AnimatorManager : MonoBehaviour
         }
         #endregion
 
+        if (isSprinting) {
+            snappedHorizontal = horizontalMovement;
+            snappedVertical = 2;
+        }
         // -> "SetFloat(int id, float value, float dampTime, float deltaTime)"
         animator.SetFloat(horizontal, snappedHorizontal, 0.1f, Time.deltaTime);
         animator.SetFloat(vertical, snappedVertical, 0.1f, Time.deltaTime);

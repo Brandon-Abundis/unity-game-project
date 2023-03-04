@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class InputManager : MonoBehaviour {
     PlayerControls playerControls;
+    PlayerLocomotion playerLocomotion;
     AnimatorManager animatorManager;
 
     public Vector2 movementInput; // a directon to Left/Right and Up/Down.
@@ -12,12 +13,15 @@ public class InputManager : MonoBehaviour {
     public float cameraInputX;
     public float cameraInputY;
 
-    private float moveAmount;
+    public float moveAmount;
     public float verticalInput;
     public float horizontalInput;
 
+    public bool b_Input;
+
     private void Awake() {
         animatorManager = GetComponent<AnimatorManager>();
+        playerLocomotion = GetComponent<PlayerLocomotion>();
     }
 
     private void OnEnable() {
@@ -29,6 +33,10 @@ public class InputManager : MonoBehaviour {
             //  vector 2 movementInput variable.
             playerControls.PlayerMovement.Movement.performed += i => movementInput = i.ReadValue<Vector2>();
             playerControls.PlayerMovement.Camera.performed += i => cameraInput = i.ReadValue<Vector2>();
+
+            // when the b/shift iput is hit, turns b_input to true
+            playerControls.PlayerActions.B.performed += i => b_Input = true;
+            playerControls.PlayerActions.B.canceled += i => b_Input = false;
         }
 
         playerControls.Enable();
@@ -42,6 +50,7 @@ public class InputManager : MonoBehaviour {
     public void HandleAllInputs() {
         // incapsulating code into one function
         HandleMovementInput();
+        HandleSprintingInput();
         //HandleJumpInput
         //HandleActionInput
     }
@@ -55,6 +64,13 @@ public class InputManager : MonoBehaviour {
 
         //math.clamp01 clamps value to 0 or 1
         moveAmount = Mathf.Clamp01(Mathf.Abs(horizontalInput) + Mathf.Abs(verticalInput));
-        animatorManager.UpdateAnimatorValue(0, moveAmount);
+        animatorManager.UpdateAnimatorValue(0, moveAmount, playerLocomotion.isSprinting);
+    }
+    private void HandleSprintingInput() {
+        if (b_Input && moveAmount > 0.5f) {
+            playerLocomotion.isSprinting = true;
+        } else {
+            playerLocomotion.isSprinting = false;
+        }
     }
 }
