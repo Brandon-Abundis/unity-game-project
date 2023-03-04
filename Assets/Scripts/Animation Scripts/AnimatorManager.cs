@@ -15,6 +15,12 @@ public class AnimatorManager : MonoBehaviour
         horizontal = Animator.StringToHash("Horizontal");
         vertical = Animator.StringToHash("Vertical");
     }
+
+    public void PlayTargetAnimation(string targetAnimation, bool isInteracting) {
+        animator.SetBool("isInteracting", isInteracting);
+        animator.CrossFade(targetAnimation, 0.2f);
+    }
+
     public void UpdateAnimatorValue(float horizontalMovement, float verticalMovement, bool isSprinting) {
         // Animation Snapping
         // snaps to a walk or a run, rounds the values, makes it cleaner
