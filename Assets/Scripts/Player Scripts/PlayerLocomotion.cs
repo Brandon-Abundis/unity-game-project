@@ -36,6 +36,7 @@ public class PlayerLocomotion : MonoBehaviour
     [Header("Jump Speeds")]
     public float jumpHeight = 3;
     public float gravityIntensity = -15;
+    private float canJump = 0f;
 
     private void Awake() {
         playerManager = GetComponent<PlayerManager>();
@@ -128,7 +129,9 @@ public class PlayerLocomotion : MonoBehaviour
     private void HandleFallingAndLanding() {
         RaycastHit hit;
         Vector3 rayCastOrigin = transform.position;
+        Vector3 targetPosition;
         rayCastOrigin.y = rayCastOrigin.y + rayCastOriginHeight;
+        targetPosition = transform.position;
 
         if (!isGrounded && !isJumping) {
             if (!playerManager.isInteracting) {
@@ -144,23 +147,44 @@ public class PlayerLocomotion : MonoBehaviour
             if (!isGrounded) { // missin !
                 animatorManager.PlayTargetAnimation("Land", true);
             }
+            // shoot a raycast out from under the player
+            // where ever the raycast is hiting the ground
+            Vector3 rayCastHitPoint = hit.point;
+            // saving the hieght at that position
+            targetPosition.y = rayCastHitPoint.y;
 
             inAirTimer = 0;
             isGrounded = true;
         } else {
             isGrounded = false;
         }
+
+        // for walking up stairs, its checking for the floor, then checks if grounded
+        //  and not jumping, its going to push the model up out of the ground and 
+        //  make our clutter float essentially
+        if(isGrounded && !isJumping) {
+            if(playerManager.isInteracting || inputManager.moveAmount > 0) {
+                transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime/0.1f);
+            } else {
+                transform.position = targetPosition;
+            }
+        }
     }
 
     public void HandleJumping() {
         if (isGrounded) {
-            animatorManager.animator.SetBool("isJumping", true);
-            animatorManager.PlayTargetAnimation("Jump", false);
+            // to stop the jump spam
+            if (Time.time > canJump) {
+            //
+                animatorManager.animator.SetBool("isJumping", true);
+                animatorManager.PlayTargetAnimation("Jump", false);
 
-            float jumpingVelocity = Mathf.Sqrt(-2 * gravityIntensity * jumpHeight);
-            Vector3 playerVelocity = moveDirection;
-            playerVelocity.y = jumpingVelocity;
-            playerRigidBody.velocity = playerVelocity;
+                float jumpingVelocity = Mathf.Sqrt(-2 * gravityIntensity * jumpHeight);
+                Vector3 playerVelocity = moveDirection;
+                playerVelocity.y = jumpingVelocity;
+                playerRigidBody.velocity = playerVelocity;
+                canJump = Time.time + 1.1f;
+            }
         }
     }
 }
