@@ -246,6 +246,24 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Right Tigger"",
+                    ""type"": ""Button"",
+                    ""id"": ""358f8ebb-ea6a-4b8e-9315-7f2d4db5e0f8"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Left Trigger"",
+                    ""type"": ""Button"",
+                    ""id"": ""894f81a5-0295-4976-b8f6-0f843ab173b5"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -292,6 +310,50 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""action"": ""Jump"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""66db8d2b-c04e-436d-abcc-a523f6df0ec7"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Right Tigger"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8fe907f7-b32a-434d-8e7e-800c87dfb78d"",
+                    ""path"": ""<Gamepad>/rightTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Right Tigger"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""232887d8-3b07-4c4b-b5c6-4fe44bd4b377"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Left Trigger"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d2bc335b-9532-434b-ae10-3e43ac5a21c0"",
+                    ""path"": ""<Gamepad>/leftTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Left Trigger"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -306,6 +368,8 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_PlayerActions = asset.FindActionMap("Player Actions", throwIfNotFound: true);
         m_PlayerActions_B = m_PlayerActions.FindAction("B", throwIfNotFound: true);
         m_PlayerActions_Jump = m_PlayerActions.FindAction("Jump", throwIfNotFound: true);
+        m_PlayerActions_RightTigger = m_PlayerActions.FindAction("Right Tigger", throwIfNotFound: true);
+        m_PlayerActions_LeftTrigger = m_PlayerActions.FindAction("Left Trigger", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -423,12 +487,16 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private List<IPlayerActionsActions> m_PlayerActionsActionsCallbackInterfaces = new List<IPlayerActionsActions>();
     private readonly InputAction m_PlayerActions_B;
     private readonly InputAction m_PlayerActions_Jump;
+    private readonly InputAction m_PlayerActions_RightTigger;
+    private readonly InputAction m_PlayerActions_LeftTrigger;
     public struct PlayerActionsActions
     {
         private @PlayerControls m_Wrapper;
         public PlayerActionsActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
         public InputAction @B => m_Wrapper.m_PlayerActions_B;
         public InputAction @Jump => m_Wrapper.m_PlayerActions_Jump;
+        public InputAction @RightTigger => m_Wrapper.m_PlayerActions_RightTigger;
+        public InputAction @LeftTrigger => m_Wrapper.m_PlayerActions_LeftTrigger;
         public InputActionMap Get() { return m_Wrapper.m_PlayerActions; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -444,6 +512,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Jump.started += instance.OnJump;
             @Jump.performed += instance.OnJump;
             @Jump.canceled += instance.OnJump;
+            @RightTigger.started += instance.OnRightTigger;
+            @RightTigger.performed += instance.OnRightTigger;
+            @RightTigger.canceled += instance.OnRightTigger;
+            @LeftTrigger.started += instance.OnLeftTrigger;
+            @LeftTrigger.performed += instance.OnLeftTrigger;
+            @LeftTrigger.canceled += instance.OnLeftTrigger;
         }
 
         private void UnregisterCallbacks(IPlayerActionsActions instance)
@@ -454,6 +528,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Jump.started -= instance.OnJump;
             @Jump.performed -= instance.OnJump;
             @Jump.canceled -= instance.OnJump;
+            @RightTigger.started -= instance.OnRightTigger;
+            @RightTigger.performed -= instance.OnRightTigger;
+            @RightTigger.canceled -= instance.OnRightTigger;
+            @LeftTrigger.started -= instance.OnLeftTrigger;
+            @LeftTrigger.performed -= instance.OnLeftTrigger;
+            @LeftTrigger.canceled -= instance.OnLeftTrigger;
         }
 
         public void RemoveCallbacks(IPlayerActionsActions instance)
@@ -480,5 +560,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     {
         void OnB(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
+        void OnRightTigger(InputAction.CallbackContext context);
+        void OnLeftTrigger(InputAction.CallbackContext context);
     }
 }
