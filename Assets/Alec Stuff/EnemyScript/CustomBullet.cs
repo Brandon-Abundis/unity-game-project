@@ -8,7 +8,7 @@ public class CustomBullet : MonoBehaviour
     // Assignables
     public Rigidbody rb;
     public GameObject explosion;
-    public GameObject whatisEnemies;
+    public LayerMask whatIsEnemies;
 
     // Stats
     [Range(0f,1f)]
@@ -44,17 +44,28 @@ public class CustomBullet : MonoBehaviour
 
     private void Explode() 
     {
-        if (explosion != null) Instantiate(explosion, transform.position, Quaternion.identify);
+        if (explosion != null) Instantiate(explosion, transform.position, Quaternion.identity);
 
         // Check for enemies
-        Collider[] enemies = Physics.OverlapSphere(transform.position, explosionRange, whatisEnemies);
+        Collider[] enemies = Physics.OverlapSphere(transform.position, explosionRange, whatIsEnemies);
 
-        
+        for (int i = 0; i < enemies.Length; i++)
+        {
+            //enemies[i].GetComponent<Enemies>().TakeDamage(explosionDamage);
+        }
+
+        Invoke("Delay", 0.05f);
+    }
+    private void Delay()
+    {
+        Destroy(gameObject);
     }
 
     private void OnCollisionEnter(Collision collision)
     {
+        collisions++;
 
+        if (collision.collider.CompareTag("Enemy") && explosionOnTouch) Explode();
     }
 
     private void Setup()
