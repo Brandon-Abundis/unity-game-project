@@ -45,7 +45,7 @@ public class CameraManager : MonoBehaviour
         // is going to update to the player's position from the current position that it
         //  in right now
         Vector3 targetPosition = Vector3.SmoothDamp
-            (transform.position, targetTransform.position, ref cameraFollowVelocity, cameraFollowSpeed);
+            (transform.position, targetTransform.position + (transform.right), ref cameraFollowVelocity, cameraFollowSpeed);
 
             transform.position = targetPosition;
     }

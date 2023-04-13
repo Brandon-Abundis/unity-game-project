@@ -140,6 +140,7 @@ public class PlayerLocomotion : MonoBehaviour
 
             inAirTimer = inAirTimer + Time.deltaTime;
             playerRigidBody.AddForce(transform.forward * leapingVelocity);
+            // playerRigidBody.AddForce(transform.forward);
             playerRigidBody.AddForce(Vector3.down * fallingVelocity * inAirTimer);
         }
         // detects the ground layer
