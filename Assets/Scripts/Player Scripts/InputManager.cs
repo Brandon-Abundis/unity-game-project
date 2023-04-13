@@ -31,6 +31,12 @@ public class InputManager : MonoBehaviour
    public GameObject rightPortal;
    public GameObject camera_obj;
 
+   [Header("zoom")]
+
+   public bool right_stick_click;
+   public bool is_pressed = false;
+   public Camera camera;
+
    private void Awake()
    {
       animatorManager = GetComponent<AnimatorManager>();
@@ -58,6 +64,8 @@ public class InputManager : MonoBehaviour
 
          playerControls.PlayerActions.RightTigger.performed += i => right_trigger = true;
          playerControls.PlayerActions.LeftTrigger.performed += i => left_trigger = true;
+
+         playerControls.PlayerActions.Zoom.performed += i => right_stick_click = true;
       }
 
       playerControls.Enable();
@@ -76,6 +84,7 @@ public class InputManager : MonoBehaviour
       HandleSprintingInput();
       HandleJumpingInput();
       HandleThrowPortals();
+      HandleZoom();
       //HandleActionInput
    }
 
@@ -126,5 +135,22 @@ public class InputManager : MonoBehaviour
          left_trigger = false;
          throwPortal.Throw_Portal(leftPortal);
       }
+   }
+
+   private void HandleZoom()
+   {
+      if (right_stick_click)
+      {
+         camera.fieldOfView = 60 / 2;
+         // right_stick_click = false;
+      }
+      else if (camera.fieldOfView != 60)
+      {
+         camera.fieldOfView = 60;
+      }
+   }
+   public void zoom()
+   {
+
    }
 }
