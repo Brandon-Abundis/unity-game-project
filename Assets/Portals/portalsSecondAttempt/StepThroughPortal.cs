@@ -27,7 +27,7 @@ public class StepThroughPortal : MonoBehaviour
          Vector3 forwardRotationAxis = Vector3.Cross(playerForward, portalForward);
          Vector3 upRotationAxis = Vector3.Cross(playerUp, portalUp);
          portalForward = Quaternion.AngleAxis(angle, Vector3.up) * portalForward;
-         other.transform.rotation = Quaternion.AngleAxis(180f, upRotationAxis) * Quaternion.LookRotation(-portalForward, upRotationAxis);
+         other.transform.rotation = Quaternion.AngleAxis(0f, upRotationAxis) * Quaternion.LookRotation(portalForward, upRotationAxis);
       }
    }
 
