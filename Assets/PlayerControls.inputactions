@@ -242,6 +242,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Zoom",
+                    "type": "Button",
+                    "id": "2e59463f-0ffd-4ffa-a81e-50585fb53d38",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -302,8 +311,8 @@
                 },
                 {
                     "name": "",
-                    "id": "8fe907f7-b32a-434d-8e7e-800c87dfb78d",
-                    "path": "<Gamepad>/rightTrigger",
+                    "id": "29aa8421-b0a3-46ca-9991-b8ed970cc2d3",
+                    "path": "<Gamepad>/rightShoulder",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -324,12 +333,34 @@
                 },
                 {
                     "name": "",
-                    "id": "d2bc335b-9532-434b-ae10-3e43ac5a21c0",
-                    "path": "<Gamepad>/leftTrigger",
+                    "id": "f18b8c79-b538-4520-8ebb-3c8a9e349883",
+                    "path": "<Gamepad>/leftShoulder",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "Left Trigger",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "041b5dc9-ed6c-47c1-928a-ce7c709a9a2b",
+                    "path": "<Gamepad>/rightStickPress",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Zoom",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "61e78b74-c43c-4071-8cd0-6e3b778831ba",
+                    "path": "<Gamepad>/leftTrigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Zoom",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
