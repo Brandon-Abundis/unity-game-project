@@ -92,19 +92,27 @@ public class InputManager : MonoBehaviour
       HandleZoom();
       //HandleActionInput
    }
+public float zoomedInCameraRotationSpeed = 1.0f;
+private void HandleMovementInput()
+{
+    verticalInput = movementInput.y; // giving it the value of y axis
+    horizontalInput = movementInput.x;
 
-   private void HandleMovementInput()
-   {
-      verticalInput = movementInput.y; // giving it the value of y axis
-      horizontalInput = movementInput.x;
+    // If zoomed in, slow down the camera rotation speed
+    float cameraRotationSpeed = zoomedInCameraRotationSpeed;
+    if (isZoomedIn)
+    {
+        cameraRotationSpeed /= 3.0f;
+    }
 
-      cameraInputY = cameraInput.y;
-      cameraInputX = cameraInput.x;
+    cameraInputY = cameraInput.y * cameraRotationSpeed;
+    cameraInputX = cameraInput.x * cameraRotationSpeed;
 
-      //math.clamp01 clamps value to 0 or 1
-      moveAmount = Mathf.Clamp01(Mathf.Abs(horizontalInput) + Mathf.Abs(verticalInput));
-      animatorManager.UpdateAnimatorValue(0, moveAmount, playerLocomotion.isSprinting);
-   }
+    //math.clamp01 clamps value to 0 or 1
+    moveAmount = Mathf.Clamp01(Mathf.Abs(horizontalInput) + Mathf.Abs(verticalInput));
+    animatorManager.UpdateAnimatorValue(0, moveAmount, playerLocomotion.isSprinting);
+}
+
    private void HandleSprintingInput()
    {
       if (b_Input && moveAmount > 0.5f)
@@ -155,30 +163,34 @@ public class InputManager : MonoBehaviour
       originalFOV = camera.fieldOfView;
    }
 
-   private void HandleZoom()
-   {
-      // Check if the right stick is being held down
-      if (playerControls.PlayerActions.Zoom.ReadValue<float>() > 0)
-      {
-         // Set the isZooming flag to true
-         isZooming = true;
-         
-         // Adjust the camera's field of view to zoom in
-         camera.fieldOfView = Mathf.Clamp(camera.fieldOfView - zoomSpeed, maxZoom, originalFOV);
-      }
-      else
-      {
-         // Set the isZooming flag to false
-         isZooming = false;
-         
-         // Adjust the camera's field of view to zoom out
-         camera.fieldOfView = Mathf.Clamp(camera.fieldOfView + zoomSpeed, originalFOV, minZoom);
-      }
-   }
+   // private float zoomOutSpeed = 1.0f;
 
+private void HandleZoom()
+{
+    // Check if the right stick is being held down
+    if (playerControls.PlayerActions.Zoom.ReadValue<float>() > 0)
+    {
+        // Set the isZoomedIn flag to true
+        isZoomedIn = true;
 
+        // Calculate the new field of view value using Mathf.Lerp()
+        float newFOV = Mathf.Lerp(camera.fieldOfView, maxZoom, zoomSpeed * Time.deltaTime);
 
+        // Clamp the new field of view value to the max zoom value
+        camera.fieldOfView = Mathf.Clamp(newFOV, maxZoom, originalFOV);
+    }
+    else
+    {
+        // Set the isZoomedIn flag to false
+        isZoomedIn = false;
 
+        // Calculate the new field of view value using Mathf.Lerp()
+        float newFOV = Mathf.Lerp(camera.fieldOfView, minZoom, zoomSpeed * Time.deltaTime);
+
+        // Clamp the new field of view value to the min zoom value
+        camera.fieldOfView = Mathf.Clamp(newFOV, originalFOV, minZoom);
+    }
+}
 
 
 
