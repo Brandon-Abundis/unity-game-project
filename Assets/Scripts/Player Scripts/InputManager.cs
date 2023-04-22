@@ -9,6 +9,7 @@ public class InputManager : MonoBehaviour
    AnimatorManager animatorManager;
 
    ThrowPortal throwPortal;
+   AimDown aimDown;
 
    public Vector2 movementInput; // a directon to Left/Right and Up/Down.
    public Vector2 cameraInput;
@@ -37,11 +38,15 @@ public class InputManager : MonoBehaviour
    public bool is_pressed = false;
    public Camera camera;
 
+     private bool isZoomedIn = false;
+   private float zoomFOV = 30f; // the FOV to use when zoomed in
+
    private void Awake()
    {
       animatorManager = GetComponent<AnimatorManager>();
       playerLocomotion = GetComponent<PlayerLocomotion>();
       throwPortal = camera_obj.GetComponent<ThrowPortal>();
+      aimDown = GetComponent<AimDown>();
    }
 
    private void OnEnable()
@@ -104,6 +109,7 @@ public class InputManager : MonoBehaviour
    {
       if (b_Input && moveAmount > 0.5f)
       {
+         // Debug.Log("b pushed");
          playerLocomotion.isSprinting = true;
       }
       else
@@ -125,32 +131,55 @@ public class InputManager : MonoBehaviour
    {
       if (right_trigger)
       {
-         Debug.Log("left click");
+         // Debug.Log("left click");
          right_trigger = false;
          throwPortal.Throw_Portal(rightPortal);
       }
       if (left_trigger)
       {
-         Debug.Log("right click");
+         // Debug.Log("right click");
          left_trigger = false;
          throwPortal.Throw_Portal(leftPortal);
       }
    }
 
+   public float zoomSpeed = 1.0f;
+   public float maxZoom = 20.0f;
+   public float minZoom = 60.0f;
+   private float originalFOV;
+   private bool isZooming = false;
+
+   private void Start()
+   {
+      // Store the original field of view value
+      originalFOV = camera.fieldOfView;
+   }
+
    private void HandleZoom()
    {
-      if (right_stick_click)
+      // Check if the right stick is being held down
+      if (playerControls.PlayerActions.Zoom.ReadValue<float>() > 0)
       {
-         camera.fieldOfView = 60 / 2;
-         // right_stick_click = false;
+         // Set the isZooming flag to true
+         isZooming = true;
+         
+         // Adjust the camera's field of view to zoom in
+         camera.fieldOfView = Mathf.Clamp(camera.fieldOfView - zoomSpeed, maxZoom, originalFOV);
       }
-      else if (camera.fieldOfView != 60)
+      else
       {
-         camera.fieldOfView = 60;
+         // Set the isZooming flag to false
+         isZooming = false;
+         
+         // Adjust the camera's field of view to zoom out
+         camera.fieldOfView = Mathf.Clamp(camera.fieldOfView + zoomSpeed, originalFOV, minZoom);
       }
    }
-   public void zoom()
-   {
 
-   }
+
+
+
+
+
+
 }
