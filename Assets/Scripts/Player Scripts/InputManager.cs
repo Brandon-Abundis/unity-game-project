@@ -139,6 +139,8 @@ private void HandleMovementInput()
 private float floatingObjectStopTime = 0.5f;
 private float timeSinceLastThrow = 0.0f;
 private bool isFloatingObjectStopped = false;
+    public Color laserColorR;
+    public Color laserColorL;
 
 private void HandleThrowPortals()
 {
@@ -160,14 +162,14 @@ private void HandleThrowPortals()
     if (right_trigger)
     {
         right_trigger = false;
-        throwPortal.Throw_Portal(rightPortal);
+        throwPortal.Throw_Portal(rightPortal, laserColorR);
         StopFloatingObject();
     }
 
     if (left_trigger)
     {
         left_trigger = false;
-        throwPortal.Throw_Portal(leftPortal);
+        throwPortal.Throw_Portal(leftPortal, laserColorL);
         StopFloatingObject();
     }
 }

@@ -8,7 +8,7 @@ public class ThrowPortal : MonoBehaviour
    public GameObject rightPortal;
    public GameObject mainCamera;
    public Transform laserSpawnPoint;
-   public Color laserColor = Color.white;
+   public Color laserColor;
 
    private LineRenderer laser;
 
@@ -21,11 +21,16 @@ public class ThrowPortal : MonoBehaviour
       laser.startWidth = 0.1f;
       laser.endWidth = 0.1f;
       laser.material = new Material(Shader.Find("Sprites/Default"));
+
+      // Set the initial color of the LineRenderer material
       laser.material.color = laserColor;
    }
 
-   public void Throw_Portal(GameObject portal)
+   public void Throw_Portal(GameObject portal, Color laser_color)
    {
+      // Update the laserColor variable to the given color value
+      laserColor = laser_color;
+
       int x = Screen.width / 2;
       int y = Screen.height / 2;
 
@@ -46,8 +51,11 @@ public class ThrowPortal : MonoBehaviour
          laser.SetPosition(0, laserSpawnPoint.position);
          laser.SetPosition(1, hit.point);
 
+         // Update the color of the LineRenderer material
+         laser.material.color = laserColor;
+
          // Enable the LineRenderer for half a second
-         StartCoroutine(EnableLaser(0.5f));
+         StartCoroutine(EnableLaser(0.25f));
       }
    }
 
