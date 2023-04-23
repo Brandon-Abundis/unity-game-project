@@ -37,6 +37,7 @@ public class InputManager : MonoBehaviour
    public bool right_stick_click;
    public bool is_pressed = false;
    public Camera camera;
+   public GameObject floating_object;
 
      private bool isZoomedIn = false;
    private float zoomFOV = 30f; // the FOV to use when zoomed in
@@ -135,21 +136,48 @@ private void HandleMovementInput()
       }
    }
 
-   private void HandleThrowPortals()
-   {
-      if (right_trigger)
-      {
-         // Debug.Log("left click");
-         right_trigger = false;
-         throwPortal.Throw_Portal(rightPortal);
-      }
-      if (left_trigger)
-      {
-         // Debug.Log("right click");
-         left_trigger = false;
-         throwPortal.Throw_Portal(leftPortal);
-      }
-   }
+private float floatingObjectStopTime = 0.5f;
+private float timeSinceLastThrow = 0.0f;
+private bool isFloatingObjectStopped = false;
+
+private void HandleThrowPortals()
+{
+    // Check if the floating object should be stopped
+    if (isFloatingObjectStopped)
+    {
+        timeSinceLastThrow += Time.deltaTime;
+        if (timeSinceLastThrow >= floatingObjectStopTime)
+        {
+            isFloatingObjectStopped = false;
+            timeSinceLastThrow = 0.0f;
+        }
+        else
+        {
+            return; // Do nothing while the floating object is stopped
+        }
+    }
+
+    if (right_trigger)
+    {
+        right_trigger = false;
+        throwPortal.Throw_Portal(rightPortal);
+        StopFloatingObject();
+    }
+
+    if (left_trigger)
+    {
+        left_trigger = false;
+        throwPortal.Throw_Portal(leftPortal);
+        StopFloatingObject();
+    }
+}
+
+private void StopFloatingObject()
+{
+    isFloatingObjectStopped = true;
+}
+
+
 
    public float zoomSpeed = 1.0f;
    public float maxZoom = 20.0f;

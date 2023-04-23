@@ -7,26 +7,22 @@ public class ThrowPortal : MonoBehaviour
    public GameObject leftPortal;
    public GameObject rightPortal;
    public GameObject mainCamera;
-   // Start is called before the first frame update
+   public Transform laserSpawnPoint;
+   public Color laserColor = Color.white;
+
+   private LineRenderer laser;
+
    void Start()
    {
       mainCamera = GameObject.FindWithTag("MainCamera");
-   }
 
-   // Update is called once per frame
-   // void Update()
-   // {
-   //    if (Input.GetMouseButtonDown(0))
-   //    {
-   //       Debug.Log("right click");
-   //       Throw_Portal(leftPortal);
-   //    }
-   //    if (Input.GetMouseButtonDown(1))
-   //    {
-   //       Debug.Log("left click");
-   //       Throw_Portal(rightPortal);
-   //    }
-   // }
+      // Add a LineRenderer component to the laser spawn point object
+      laser = laserSpawnPoint.gameObject.AddComponent<LineRenderer>();
+      laser.startWidth = 0.1f;
+      laser.endWidth = 0.1f;
+      laser.material = new Material(Shader.Find("Sprites/Default"));
+      laser.material.color = laserColor;
+   }
 
    public void Throw_Portal(GameObject portal)
    {
@@ -45,6 +41,20 @@ public class ThrowPortal : MonoBehaviour
          Quaternion hitObjectOrientation = Quaternion.LookRotation(hit.normal);
          portal.transform.position = hit.point;
          portal.transform.rotation = hitObjectOrientation;
+
+         // Set the positions of the LineRenderer
+         laser.SetPosition(0, laserSpawnPoint.position);
+         laser.SetPosition(1, hit.point);
+
+         // Enable the LineRenderer for half a second
+         StartCoroutine(EnableLaser(0.5f));
       }
+   }
+
+   IEnumerator EnableLaser(float duration)
+   {
+      laser.enabled = true;
+      yield return new WaitForSeconds(duration);
+      laser.enabled = false;
    }
 }
