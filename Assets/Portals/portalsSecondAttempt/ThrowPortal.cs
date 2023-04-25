@@ -43,19 +43,21 @@ public class ThrowPortal : MonoBehaviour
 
       if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask))
       {
-         Quaternion hitObjectOrientation = Quaternion.LookRotation(hit.normal);
-         portal.transform.position = hit.point;
-         portal.transform.rotation = hitObjectOrientation;
+         if (hit.transform.tag == "portalSurface") {
+            Quaternion hitObjectOrientation = Quaternion.LookRotation(hit.normal);
+            portal.transform.position = hit.point;
+            portal.transform.rotation = hitObjectOrientation;
 
-         // Set the positions of the LineRenderer
-         laser.SetPosition(0, laserSpawnPoint.position);
-         laser.SetPosition(1, hit.point);
+            // Set the positions of the LineRenderer
+            laser.SetPosition(0, laserSpawnPoint.position);
+            laser.SetPosition(1, hit.point);
 
-         // Update the color of the LineRenderer material
-         laser.material.color = laserColor;
+            // Update the color of the LineRenderer material
+            laser.material.color = laserColor;
 
-         // Enable the LineRenderer for half a second
-         StartCoroutine(EnableLaser(0.25f));
+            // Enable the LineRenderer for half a second
+            StartCoroutine(EnableLaser(0.25f));
+         }
       }
    }
 
