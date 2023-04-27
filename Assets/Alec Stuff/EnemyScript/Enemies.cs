@@ -13,6 +13,8 @@ public class Enemies : MonoBehaviour
 
     public LayerMask whatIsGround, whatIsPlayer;
 
+    public float health;
+
     // Patrolling
 
     public Vector3 walkPoint;
@@ -22,6 +24,7 @@ public class Enemies : MonoBehaviour
     // Attacking
     public float timeBetweenAttacks;
     bool alreadyAttacked;
+    public GameObject projectile;
 
     // States
     public float sightRange, attackRange;
@@ -81,6 +84,12 @@ public class Enemies : MonoBehaviour
 
         if (!alreadyAttacked)
         {
+            // Attack code goes here
+            // Rigidbody rb = Instantiate(projectile, transform.position, Quaternion.identity).GetComponent<Rigidbody>();
+            // rb.AddForce(transform.forward * 32f, ForceMode.Impulse);
+            // rb.AddForce(transform.up * 8f, ForceMode.Impulse);
+
+            //
             alreadyAttacked = true;
             Invoke(nameof(ResetAttack), timeBetweenAttacks);
         }
@@ -90,5 +99,17 @@ public class Enemies : MonoBehaviour
     {
         alreadyAttacked = false;
     }
+    
+    // public void TakeDamage(int damage)
+    // {
+    //     health -= damage;
+
+    //     if (health <= 0) Invoke(nameof(DestroyEnemy), 0.5f);
+    // }
+
+    // public void DestroyEnemy()
+    // {
+    //     Destroy(gameObject);
+    // }
 
 }
