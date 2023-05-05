@@ -14,7 +14,7 @@ after decades of decay, the automatons have lost their edge in critical thinking
 
 # How to Run the Game
 
-You can Run the Game through the executable file called `yucatan.exe`
+You can Run the Game through the executable file called `Game.exe`
 
 ## Else, Initial Dependencies
 1. Go to the Unity website: [Unity Engine](https://unity.com/download ), and download the software.
@@ -36,17 +36,23 @@ It is recomended to play this game with a controller
 
 - For controller inputs, use the `Left Stick`.
 
+![Imgur](https://imgur.com/gqDf1T5.gif)
+
 ### Looking Around
 
 - Use the mouse to look around the game, aka move the mouse on a mouse pad.
 
 - For controller input, use the `Right Stick` to look around.
 
+![Imgur](https://imgur.com/00Kc5PT.gif)
+
 ### Jumping
 
 - Use the `Space` bar to make the player jump in game.
 
 - On the Controller, press the `A` or `X` button.
+
+![Imgur](https://imgur.com/aboDw6O.gif)
 
 ## Tools
 
@@ -57,6 +63,8 @@ In this game there are two portals available for you to use.
 - You will be using the mouse for this, For the left portal it should be `Left Click` and for the right protal it is `Right Click`.
 
 - For the controller, the left portal is `Left Bumper` / `L1`, and for the right portal it will be `right Bumper`.
+
+![Imgur](https://imgur.com/zXb4rM0.gif)
 
 ### Friendly Bot
 
@@ -77,6 +85,8 @@ There is a floating bot that follows you arrownd that is supposed
 ## Tools
 
 - The ability to pick up objects is desired.
+
+![Imgur](https://imgur.com/4nM95Hn.gif)
 
 - A damage system for the player is on pair with priority.
 
